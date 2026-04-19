@@ -11,7 +11,7 @@ export class UsersService {
     private readonly emailService :EmailService
   ){}
   async register(registerData :registerDto){
-    const{Username,email,password}= registerData;
-    const normalizedEmail = email.trim().toLoweCase()
+    const{username,email,password}= registerData;
+    const normalizedEmail = email.trim().toLowerCase()
   }
 }

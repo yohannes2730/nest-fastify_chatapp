@@ -12,23 +12,5 @@ export class EmailController {
     return this.emailService.create(createEmailDto);
   }
 
-  @Get()
-  findAll() {
-    return this.emailService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.emailService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEmailDto: UpdateEmailDto) {
-    return this.emailService.update(+id, updateEmailDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.emailService.remove(+id);
-  }
+  
 }

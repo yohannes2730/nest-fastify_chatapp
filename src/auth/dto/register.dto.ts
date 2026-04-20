@@ -3,7 +3,7 @@ import{IsString,IsEmail,Matches,MinLength}from 'class-validator'
 export class registerDto{ 
     @IsString()
     @Matches(/^[a-zA-Z0-9_.]{3,20}$/, { message: 'Invalid username format' })
-    username: string;
+    Username: string;
     @IsEmail()
     email: string;
     @IsString()

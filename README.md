@@ -17,6 +17,7 @@ A high-performance, scalable real-time chat application built using **NestJS** w
 *  Room-based or private messaging support
 *  Message history (optional with database integration)
 
+---
 
 
 ##  Tech Stack

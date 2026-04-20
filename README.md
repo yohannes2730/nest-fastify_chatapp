@@ -1,25 +1,25 @@
 
-# 🚀 Real-Time Chat Application (NestJS + Fastify)
+#  Real-Time Chat Application (NestJS + Fastify)
 
 A high-performance, scalable real-time chat application built using **NestJS** with the **Fastify** adapter. This project demonstrates modern backend architecture with WebSockets, authentication, and efficient message handling for real-time communication.
 
 ---
 
-## 📌 Features
+##  Features
 
-* 💬 Real-time messaging using WebSockets
-* ⚡ Fast performance with Fastify adapter
-* 🔐 JWT-based authentication & authorization
-* 👤 User registration and login system
-* 🟢 Online/offline user status tracking
-* 📡 Event-driven architecture (Gateway-based communication)
-* 🗂️ Modular and scalable project structure
-* 🧵 Room-based or private messaging support
-* 📜 Message history (optional with database integration)
+*  Real-time messaging using WebSockets
+*  Fast performance with Fastify adapter
+*  JWT-based authentication & authorization
+*  User registration and login system
+*  Online/offline user status tracking
+*  Event-driven architecture (Gateway-based communication)
+*  Modular and scalable project structure
+*  Room-based or private messaging support
+*  Message history (optional with database integration)
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 * **Backend Framework:** NestJS
 * **HTTP Adapter:** Fastify
@@ -30,7 +30,7 @@ A high-performance, scalable real-time chat application built using **NestJS** w
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/
@@ -44,7 +44,7 @@ src/
 
 ---
 
-## ⚙️ Installation
+##  Installation
 
 ```bash
 # Clone the repository
@@ -72,7 +72,7 @@ npm run start:prod
 
 ---
 
-## 🔌 Fastify Setup (main.ts)
+## Fastify Setup (main.ts)
 
 ```ts
 async function bootstrap() {
@@ -88,16 +88,16 @@ bootstrap();
 
 ---
 
-## 🔐 Authentication Flow
+##  Authentication Flow
 
-1. User registers with email & password
+1. User registers with username, email & password
 2. Password is hashed (bcrypt)
 3. User logs in → receives JWT token
 4. Token is used to access protected routes and WebSocket connections
 
 ---
 
-## 💬 WebSocket Communication
+##  WebSocket Communication
 
 * Clients connect via Socket.IO
 * Events handled in **ChatGateway**
@@ -110,7 +110,7 @@ bootstrap();
 
 ---
 
-## 📡 Example WebSocket Event
+##  Example WebSocket Event
 
 ```ts
 @SubscribeMessage('sendMessage')
@@ -124,43 +124,15 @@ handleMessage(@MessageBody() data: any) {
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
-* 🤖 AI-based smart replies
-* 📱 Mobile app integration
-* 🔔 Push notifications
-* 📎 File & media sharing
-* 🧠 Chat analytics and insights
-* 🌐 Multi-language support
+*  AI-based smart replies
+*  Mobile app integration
+*  Push notifications
+*  File & media sharing
+*  Chat analytics and insights
+*  Multi-language support
 
----
-
-## 🧪 Testing
-
-```bash
-npm run test
-npm run test:e2e
-```
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License.
-
----
-
-## 🙌 Contribution
-
-Contributions are welcome! Feel free to fork the repo and submit a pull request.
-
----
-
-## 📧 Contact
-
-For questions or support, reach out via email or open an issue in the repository.
-
----
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>

@@ -10,5 +10,7 @@ export class Auths {
   email: String;
   @Prop({ required: true, trim: true ,select :false})
   password: String;
+  @Prop({default :false})
+  isVerified : boolean
 }
 export const userSchema = SchemaFactory.createForClass(Auths)

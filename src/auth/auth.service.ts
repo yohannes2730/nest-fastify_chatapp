@@ -1,47 +1,73 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { registerDto } from './dto/register.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Auths } from './Schema/auth.schema';
 import { Model } from 'mongoose';
-import { EmailService } from 'src/email/email.service';
+import * as bcrypt from 'bcryptjs';
+
+import { Users } from 'src/users/Schema/user.schema';
+import { registerDto } from './dto/register.dto';
 import { loginDto } from './dto/login.dto';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(Auths.name) private readonly userModel: Model<Auths>,
+    @InjectModel(Users.name) private readonly userModel: Model<Users>,
     private readonly emailService: EmailService,
   ) {}
+
   async register(registerData: registerDto) {
     const { Username, email, password } = registerData;
-    const normalizedemail = email.trim().toLowerCase();
+
+    const normalizedEmail = email.trim().toLowerCase();
+
     const userExist = await this.userModel.findOne({
-      email: normalizedemail && Username,
+      email: normalizedEmail,
     });
-    if (userExist) throw new BadRequestException('User already exist');
-    const newUsers = new this.userModel({
+
+    if (userExist) {
+      throw new BadRequestException('User already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new this.userModel({
       Username,
-      email: normalizedemail,
-      password,
+      email: normalizedEmail,
+      password: hashedPassword,
       isVerified: false,
     });
-    await newUsers.save();
-    return { message: 'user register successfully' };
+
+    await newUser.save();
+
+    return { message: 'User registered successfully' };
   }
+
   async login(loginData: loginDto) {
     const { email, password } = loginData;
-    const normalizedemail = email.trim().toLowerCase();
-    const users = await this.userModel
-      .findOne({ email: normalizedemail })
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    const user = await this.userModel
+      .findOne({ email: normalizedEmail })
       .select('+password');
 
-    if (!users || !password)
-      throw new BadRequestException('invalid email or password');
+    if (!user) {
+      throw new BadRequestException('Invalid email or password');
+    }
 
-    if (!users.isVerified)
-      throw new BadRequestException('please verified your email first');
-    await users.save();
-    return { message: 'user login successfully' };
+    const isMatch =  await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new BadRequestException('Invalid email or password');
+    }
+
+    if (!user.isVerified) {
+      throw new BadRequestException('Please verify your email first');
+    }
+
+    return {
+      message: 'Login successful',
+      userId: user._id,
+    };
   }
-  
 }

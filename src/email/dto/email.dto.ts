@@ -1,4 +1,9 @@
 
+import { IsString ,IsEmail} from "class-validator";
+
 export class EmailDto{
-    
-}2
+    @IsEmail()
+    email: string;
+    @IsString()
+    otp: string;
+}

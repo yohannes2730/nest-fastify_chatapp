@@ -51,11 +51,11 @@ export class AuthService {
       .findOne({ email: normalizedEmail })
       .select('+password');
 
-    if (!user) {
-      throw new BadRequestException('Invalid email or password');
-    }
+    if (!user || !user.password) {
+  throw new BadRequestException('Invalid email or password');
+}
 
-    const isMatch =  await bcrypt.compare(password, user.password);
+const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       throw new BadRequestException('Invalid email or password');

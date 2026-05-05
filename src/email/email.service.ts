@@ -4,10 +4,12 @@ import { Model } from 'mongoose';
 import { randomInt } from 'node:crypto';
 import { Users } from 'src/users/Schema/user.schema';
 import { EmailOtp } from './Schema/email.schema';
+import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class EmailService {
 
     constructor(
+     private readonly mailerService: MailerService,
         @InjectModel(Users.name) private readonly userModel: Model<Users>,
         @InjectModel(EmailOtp.name) private readonly emailModel: Model<EmailOtp>
     ) 

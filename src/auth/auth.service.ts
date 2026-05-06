@@ -13,34 +13,39 @@ export class AuthService {
   constructor(
     @InjectModel(Users.name) private readonly userModel: Model<Users>,
     private readonly emailService: EmailService,
-  ) {}
+  ) {} 
 
-  async register(registerData: registerDto) {
-    const { Username, email, password } = registerData;
+   async register(registerData: registerDto) {
+  const { Username, email, password } = registerData;
 
-    const normalizedEmail = email.trim().toLowerCase();
-
-    const userExist = await this.userModel.findOne({
-      email: normalizedEmail,
-    });
-
-    if (userExist) {
-      throw new BadRequestException('User already exists');
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new this.userModel({
-      Username,
-      email: normalizedEmail,
-      password: hashedPassword,
-      isVerified: false,
-    });
-
-    await newUser.save();
-
-    return { message: 'User registered successfully' };
+  if (!Username || !email || !password ) {
+    throw new BadRequestException('Missing required fields');
   }
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const userExist = await this.userModel.findOne({ email: normalizedEmail });
+  if (userExist) throw new BadRequestException('Email already exists');
+
+  const usernameExist = await this.userModel.findOne({ Username });
+  if (usernameExist)
+    throw new BadRequestException('Username already exists');
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const newUser = new this.userModel({
+    username: Username,
+    email: normalizedEmail,
+    password: hashedPassword,
+    isVerified: false,
+  });
+
+  await newUser.save();
+
+  await this.emailService.sendOtpEmail(normalizedEmail);
+
+  return { message: 'Registration successful. OTP sent to email.' };
+}
 
   async login(loginData: loginDto) {
     const { email, password } = loginData;

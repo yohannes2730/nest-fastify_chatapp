@@ -9,8 +9,6 @@ export class ConversationsService {
     @InjectModel(Conversation.name)
     private readonly conversationModel: Model<ConversationDocument>,
   ) {}
-
-
   async createOrGetPrivateConversation(
     user1Id: string,
     user2Id: string,
@@ -33,8 +31,6 @@ export class ConversationsService {
 
     return conversation;
   }
-
- 
   async createGroupConversation(
     creatorId: string,
     participantIds: string[],
@@ -46,7 +42,7 @@ export class ConversationsService {
 
     const participants = [
       new Types.ObjectId(creatorId),
-      ...participantIds.map((id) => new Types.ObjectId(id)),
+      participantIds.map((id) => new Types.ObjectId(id)),
     ];
 
     const conversation = await this.conversationModel.create({

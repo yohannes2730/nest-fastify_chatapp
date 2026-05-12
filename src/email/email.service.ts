@@ -65,6 +65,9 @@ export class EmailService {
     await this.userModel.updateOne({ email }, { $set: { isVerified: true } });
     return { message: 'Email verified successfully' };
   }
-  
+  async resendOtp(email: string) {
+    if(!email){ 
 
+    }
+}
 }

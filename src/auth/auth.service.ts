@@ -42,7 +42,7 @@ export class AuthService {
 
   await newUser.save();
 
-  await this.emailService.sendOtpEmail(normalizedEmail);
+  await this.emailService.sendOtp(normalizedEmail);
 
   return { message: 'Registration successful. OTP sent to email.' };
 }

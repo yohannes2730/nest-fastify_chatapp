@@ -17,7 +17,7 @@ export class EmailService {
     return randomInt(100000, 999999).toString();
   }
 
-  async sendOtpEmail(email: string): Promise<{ message: string }> {
+  async sendOtp(email: string): Promise<{ message: string }> {
     if (!email) {
       throw new Error('Email is required');
     }
@@ -69,17 +69,32 @@ export class EmailService {
     return { message: 'Email verified successfully' };
   }
 
-  
-  async resendOtp(email: string) {
-    if (!email) {
-      throw new Error('Email is required');
-    }
-    const user = await this.userModel.findOne({ email });
-    if (!user) {
-      throw new Error('User not found');
-    }
-    if (email !== user.email) {
-      throw new Error('Email does not match our records');
-    }
+  async resendOtp(email: string): Promise<{ message: string }> {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await this.userModel.findOne({ email: normalizedEmail});
+
+  if (!user) {
+    throw new BadRequestException('User not found');
   }
+  const record = await this.emailModel.findOne({ email: normalizedEmail })
+    .sort({ expiresAt: -1 }).exec();
+  const now = new Date();
+  if (record) {
+    if (record.resendCount >= 3) {
+      throw new BadRequestException('Resend OTP limit reached');
+    }
+    if (record.lastResendAt &&now.getTime() -
+        new Date(record.lastResendAt).getTime() < 60000
+    ) {
+      throw new BadRequestException(
+        'Please wait 60 seconds before resending OTP',
+      );
+    }
+    record.resendCount += 1;
+    record.lastResendAt = now;
+  }
+
+  return this.sendOtp(normalizedEmail);
+}
 }

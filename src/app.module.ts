@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
 import { ConversationsModule } from './conversations/conversations.module';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
 import { EmailModule } from './email/email.module';
+import { UsersModule } from './users/users.module';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -20,20 +18,21 @@ import { MongooseModule } from '@nestjs/mongoose';
 
     // DATABASE
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const uri = configService.get<string>('database.connectionString');
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: (configService: ConfigService) => {
+    const uri = configService.get<string>('DATABASE_URL');
 
-        if (!uri) {
-          throw new Error('MongoDB connection string is not defined!');
-        }
+    if (!uri) {
+      throw new Error('DATABASE_URL is not defined in .env');
+    }
 
-        return { uri };
-      },
-    }),
+    return { uri };
+  },
+}),
 
     // MODULES
+    UsersModule,
     EmailModule,
     ConversationsModule,
     ChatModule,
@@ -41,6 +40,5 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
 
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

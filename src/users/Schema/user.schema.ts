@@ -8,9 +8,6 @@ export class User {
   @Prop({ required: true, unique: true, trim: true })
   email: string;
 
-  @Prop({ select: false })
-  password?: string;
-
   @Prop({ default: false })
   isVerified: boolean;
 

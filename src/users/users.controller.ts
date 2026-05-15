@@ -1,25 +1,35 @@
-import { Controller, Get, Param, Patch, Delete, Body } from '@nestjs/common';
+import { Controller, Get, Patch, Delete, Req, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { auth } from 'src/auth/auth';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get(':id')
-  getUser(@Param('id') id: string) {
-    return this.usersService.findById(id);
+  @Get('me')
+  async getMe(@Req() req) {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
+
+    return this.usersService.getMe(session.user.id);
   }
 
-  @Patch(':id')
-  updateUser(
-    @Param('id') id: string,
-    @Body() data: updateUserDto,
-  ) {
-    return this.usersService.updateUser(id, data);
+  @Patch('me')
+  async updateMe(@Req() req, @Body() body: { email: string }) {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
+
+    return this.usersService.updateMe(session.user.id, body);
   }
 
-  @Delete(':id')
-  deleteUser(@Param('id') id: string) {
-    return this.usersService.deleteUser(id);
+  @Delete('me')
+  async deleteMe(@Req() req) {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
+
+    return this.usersService.deleteMe(session.user.id);
   }
 }

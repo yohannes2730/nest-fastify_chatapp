@@ -2,18 +2,17 @@ import { Module } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmailOtp, EmailOtpSchema } from './Schema/email.schema';
-import { Users, userSchema } from 'src/users/Schema/user.schema';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
 
 @Module({
   imports: [
     ConfigModule,
+
     MongooseModule.forFeature([
       { name: EmailOtp.name, schema: EmailOtpSchema },
-      { name: Users.name, schema: userSchema },
     ]),
+
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,8 +29,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
     }),
   ],
-  controllers: [EmailController],
+
   providers: [EmailService],
-  exports: [EmailService], 
+  exports: [EmailService],
 })
 export class EmailModule {}

@@ -14,7 +14,6 @@ import { ConfigService } from '@nestjs/config';
 
 import { MongooseModule } from '@nestjs/mongoose';
 
-import config from './config/config';
 
 @Module({
   imports: [

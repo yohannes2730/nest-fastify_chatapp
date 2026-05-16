@@ -66,7 +66,7 @@ export class EmailService {
 
     return { message: 'Email verified successfully' };
   }
-
+   // this resend otp with limit and coooldown of 60 seconds
   async resendOtp(email: string) {
     const normalizedEmail = email.trim().toLowerCase();
 

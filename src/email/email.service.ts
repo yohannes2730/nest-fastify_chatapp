@@ -43,7 +43,7 @@ export class EmailService {
 
     return { message: 'OTP sent' };
   }
-
+// verfiy otp
   async verifyOtp(email: string, otp: string) {
     if (!email || !otp) {
       throw new BadRequestException('Email and OTP required');

@@ -32,7 +32,6 @@ export class EmailService {
       verified: false,
       resendCount: 0,
     });
-
     await this.mailerService.sendMail({
        to: email,
       from: `"joye love" <${process.env.MAIL_USER}>`,
@@ -80,7 +79,6 @@ export class EmailService {
       if (record.resendCount >= 3) {
         throw new BadRequestException('Resend limit reached');
       }
-
       if (
         record.lastResendAt &&
         now.getTime() - new Date(record.lastResendAt).getTime() < 60000
